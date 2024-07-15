@@ -10,6 +10,7 @@ function App() {
   const [cnpj, setCnpj] = useState("");
   const [servico, setServico] = useState("");
   const [arquivo, setArquivo] = useState<File | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -21,20 +22,16 @@ function App() {
     event.preventDefault();
 
     if (!arquivo) {
-      console.error("No file selected");
+      setMessage("No file selected");
       return;
     }
 
     const formData = new FormData();
-    formData.append("nome", nome);
-    formData.append("email", email);
-    formData.append("contato", contato);
-    formData.append("cnpj", cnpj);
-    formData.append("servico", servico);
     formData.append("file", arquivo);
 
     try {
-      const response = await axios.post(
+      // Primeiro envia o arquivo para a rota /upload
+      const fileResponse = await axios.post(
         "http://localhost:3000/upload",
         formData,
         {
@@ -43,9 +40,33 @@ function App() {
           },
         }
       );
-      console.log(response.data);
+
+      console.log("File uploaded:", fileResponse.data);
+
+      // Depois envia os dados do formulário para a rota /add-emissor
+      const emissorData = {
+        Nome: nome,
+        Email: email,
+        Contato: contato,
+        CNPJ: cnpj,
+        Servico: servico,
+      };
+
+      const emissorResponse = await axios.post(
+        "http://localhost:3000/add-emissor",
+        emissorData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Emissor added:", emissorResponse.data);
+      setMessage("Emissor added successfully");
     } catch (error) {
-      console.error("Error uploading file:", error);
+      console.error("Error:", error);
+      setMessage("Error uploading file or adding emissor");
     }
   };
 
@@ -110,6 +131,7 @@ function App() {
         <br />
         <button type="submit">Submit</button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
 }
