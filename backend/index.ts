@@ -48,18 +48,16 @@ app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
 });
 
 // Rota para adicionar um emissor ao banco de dados
-app.post('/add-emissor', checkDbConnection, async (req: Request, res: Response) => {
-  const { Nome, Email, Contato, CNPJ, Servico } = req.body;
+app.post('/add-emissor', checkDbConnection, upload.single('file'), async (req: Request, res: Response) => {
+  const { Nome, Email, Contato, CNPJ, Servico, fileUrl } = req.body;
 
-  console.log('Received data:', { Nome, Email, Contato, CNPJ, Servico });
-
-  if (!Nome || !Email || !Contato || !CNPJ || !Servico) {
+  if (!Nome || !Email || !Contato || !CNPJ || !Servico || !fileUrl) {
     return res.status(400).send('Missing fields in request body.');
   }
 
   try {
-    const emissor = { Nome, Email, Contato, CNPJ, Servico };
-    const result = await db.collection('Emissor').insertOne(emissor); // Nome da coleção que você criou
+    const emissor = { Nome, Email, Contato, CNPJ, Servico, fileUrl };
+    const result = await db.collection('Emissor').insertOne(emissor);
     console.log('Data inserted successfully', result);
 
     res.status(200).send('Emissor added successfully');
@@ -68,7 +66,6 @@ app.post('/add-emissor', checkDbConnection, async (req: Request, res: Response) 
     res.status(500).send(`Erro ao inserir dados: ${(err as Error).message}`);
   }
 });
-
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
