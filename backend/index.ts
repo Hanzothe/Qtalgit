@@ -48,7 +48,7 @@ app.post('/upload', upload.single('file'), (req: Request, res: Response) => {
 });
 
 // Rota para adicionar um emissor ao banco de dados
-app.post('/add-emissor', checkDbConnection, upload.single('file'), async (req: Request, res: Response) => {
+app.post('/add-emissor', checkDbConnection, async (req: Request, res: Response) => {
   const { Nome, Email, Contato, CNPJ, Servico, fileUrl } = req.body;
 
   if (!Nome || !Email || !Contato || !CNPJ || !Servico || !fileUrl) {
@@ -58,7 +58,7 @@ app.post('/add-emissor', checkDbConnection, upload.single('file'), async (req: R
   try {
     const emissor = { Nome, Email, Contato, CNPJ, Servico, fileUrl };
     const result = await db.collection('Emissor').insertOne(emissor);
-    console.log('Data inserted successfully', result);
+    console.log('Emissor inserted successfully', result);
 
     res.status(200).send('Emissor added successfully');
   } catch (err) {
@@ -66,6 +66,58 @@ app.post('/add-emissor', checkDbConnection, upload.single('file'), async (req: R
     res.status(500).send(`Erro ao inserir dados: ${(err as Error).message}`);
   }
 });
+
+// Rota para adicionar um funcionário ao banco de dados
+app.post('/add-funcionario', checkDbConnection, async (req: Request, res: Response) => {
+  const { Nome, Email, Contato, CNPJ, Servico } = req.body;
+
+  if (!Nome || !Email || !Contato || !CNPJ || !Servico) {
+    return res.status(400).send('Missing fields in request body.');
+  }
+
+  try {
+    const funcionario = { Nome, Email, Contato, CNPJ, Servico };
+    const result = await db.collection('Funcionarios').insertOne(funcionario);
+    console.log('Funcionario inserted successfully', result);
+
+    res.status(200).send('Funcionario added successfully');
+  } catch (err) {
+    console.error('Erro ao inserir dados:', (err as Error).message);
+    res.status(500).send(`Erro ao inserir dados: ${(err as Error).message}`);
+  }
+});
+
+// Rota para adicionar uma nota ao banco de dados
+app.post('/add-nota', checkDbConnection, async (req: Request, res: Response) => {
+  const { funcionario, fileUrl } = req.body;
+
+  if (!funcionario || !fileUrl) {
+    return res.status(400).send('Missing fields in request body.');
+  }
+
+  try {
+    const nota = { funcionario, fileUrl };
+    const result = await db.collection('Notas').insertOne(nota);
+    console.log('Nota inserted successfully', result);
+
+    res.status(200).send('Nota added successfully');
+  } catch (err) {
+    console.error('Erro ao inserir dados:', (err as Error).message);
+    res.status(500).send(`Erro ao inserir dados: ${(err as Error).message}`);
+  }
+});
+
+// Rota para buscar todos os funcionários do banco de dados
+app.get('/get-funcionarios', checkDbConnection, async (req: Request, res: Response) => {
+  try {
+    const funcionarios = await db.collection('Funcionarios').find().toArray();
+    res.status(200).json(funcionarios);
+  } catch (err) {
+    console.error('Erro ao buscar funcionários:', (err as Error).message);
+    res.status(500).send(`Erro ao buscar funcionários: ${(err as Error).message}`);
+  }
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
