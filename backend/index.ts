@@ -3,7 +3,7 @@ import multer from 'multer';
 import { storage } from './multerConfig';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, ObjectId } from 'mongodb';
 
 const upload = multer({ storage: storage });
 const app = express();
@@ -87,6 +87,8 @@ app.post('/add-funcionario', checkDbConnection, async (req: Request, res: Respon
   }
 });
 
+
+
 // Rota para adicionar uma nota ao banco de dados
 app.post('/add-nota', checkDbConnection, async (req: Request, res: Response) => {
   const { funcionario, fileUrl } = req.body;
@@ -107,6 +109,16 @@ app.post('/add-nota', checkDbConnection, async (req: Request, res: Response) => 
   }
 });
 
+app.get('/get-notas-fiscais', checkDbConnection, async (req: Request, res: Response) => {
+  try {
+    const notasFiscais = await db.collection('Notas').find().toArray();
+    res.status(200).json(notasFiscais);
+  } catch (err) {
+    console.error('Erro ao buscar notas fiscais:', (err as Error).message);
+    res.status(500).send(`Erro ao buscar notas fiscais: ${(err as Error).message}`);
+  }
+});
+
 // Rota para buscar todos os funcionários do banco de dados
 app.get('/get-funcionarios', checkDbConnection, async (req: Request, res: Response) => {
   try {
@@ -117,6 +129,38 @@ app.get('/get-funcionarios', checkDbConnection, async (req: Request, res: Respon
     res.status(500).send(`Erro ao buscar funcionários: ${(err as Error).message}`);
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+//rota teste pra buscar o funcionário pelo ID
+
+app.get('/get-funcionario/:id', checkDbConnection, async (req: Request, res: Response) => {
+  const funcionarioId = req.params.id;
+
+  try {
+    const funcionario = await db.collection('Funcionarios').findOne({ _id: new ObjectId(funcionarioId) }); // Correção aqui
+
+    if (!funcionario) {
+      return res.status(404).send('Funcionário não encontrado');
+    }
+
+    res.status(200).json(funcionario);
+  } catch (err) {
+    console.error('Erro ao buscar funcionário:', (err as Error).message);
+    res.status(500).send(`Erro ao buscar funcionário: ${(err as Error).message}`);
+  }
+});
+
 
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');

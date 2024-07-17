@@ -112,7 +112,6 @@ export function NotasForm() {
             </select>
           </div>
         </div>
-
         <div className="row mb-4">
           <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
             Arquivo:

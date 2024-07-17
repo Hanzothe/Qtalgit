@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { Button } from "react-bootstrap";
 
 export function FuncionariosForm() {
   const [nome, setNome] = useState("");
@@ -9,50 +10,22 @@ export function FuncionariosForm() {
   const [contato, setContato] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [servico, setServico] = useState("");
-  const [arquivo, setArquivo] = useState<File | null>(null);
   const [message, setMessage] = useState<string>("");
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setArquivo(event.target.files[0]);
-    }
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!arquivo) {
-      setMessage("Nenhum arquivo selecionado");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", arquivo);
+    // Dados do funcionário a serem enviados
+    const funcionarioData = {
+      Nome: nome,
+      Email: email,
+      Contato: contato,
+      CNPJ: cnpj,
+      Servico: servico,
+    };
 
     try {
-      // Primeiro envia o arquivo para a rota /upload
-      const fileResponse = await axios.post(
-        "http://localhost:3000/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Arquivo enviado:", fileResponse.data);
-
-      // Depois envia os dados do formulário para a rota /add-funcionario
-      const funcionarioData = {
-        Nome: nome,
-        Email: email,
-        Contato: contato,
-        CNPJ: cnpj,
-        Servico: servico,
-        fileUrl: `http://localhost:3000/files/${fileResponse.data}`, // URL do arquivo
-      };
-
+      // Envia os dados do formulário para a rota /add-funcionario
       const funcionarioResponse = await axios.post(
         "http://localhost:3000/add-funcionario",
         funcionarioData,
@@ -67,7 +40,7 @@ export function FuncionariosForm() {
       setMessage("Funcionário adicionado com sucesso");
     } catch (error) {
       console.error("Erro:", error);
-      setMessage("Erro ao enviar o arquivo ou adicionar o funcionário");
+      setMessage("Erro ao adicionar o funcionário");
     }
   };
 
@@ -146,20 +119,6 @@ export function FuncionariosForm() {
               name="servico"
               value={servico}
               onChange={(event) => setServico(event.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="row mt-2 mb-4">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
-            Arquivo:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control"
-              type="file"
-              name="arquivo"
-              onChange={handleFileChange}
             />
           </div>
         </div>

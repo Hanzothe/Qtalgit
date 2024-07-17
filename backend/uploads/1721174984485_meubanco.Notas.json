@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "6696cbd484c16bde82581f6f"
+  },
+  "funcionario": "6696c9bfcbce73e196567788",
+  "fileUrl": "http://localhost:3000/files/1721158612914_Deck - Mono-Red Synthesizer.dek"
+},
+{
+  "_id": {
+    "$oid": "6696cc7984c16bde82581f70"
+  },
+  "funcionario": "6696c9bfcbce73e196567788",
+  "fileUrl": "http://localhost:3000/files/1721158777476_Deck - Mono-Red Synthesizer.dek"
+},
+{
+  "_id": {
+    "$oid": "6696fa3fe889846ed71a4b33"
+  },
+  "funcionario": "6696c86e085b34ed5be31a38",
+  "fileUrl": "http://localhost:3000/files/1721170495416_Vinimar ft Lil Ghwst.png"
+}]
