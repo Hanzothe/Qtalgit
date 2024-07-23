@@ -103,9 +103,12 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
           <Col sm={10}>
           <InputMask
-              mask="(99) \99999-9999"
+              mask="(99) 99999-9999"
               value={contato}
-              
+              onChange={(event) => {
+                const newValue = event.target.value.replace(/\D+/g, '');
+                setContato(newValue);
+              }}
             >
               {() => <Form.Control type="text" className="form-control-lg" />}
             </InputMask>
