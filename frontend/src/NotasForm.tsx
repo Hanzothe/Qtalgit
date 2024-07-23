@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import InputMask from 'react-input-mask';
 
 interface Funcionario {
   _id: string;
@@ -9,27 +11,40 @@ interface Funcionario {
 }
 
 export function NotasForm() {
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+  
   const [selectedFuncionario, setSelectedFuncionario] = useState("");
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState("");
   const [message, setMessage] = useState<string>("");
 
-  useEffect(() => {
-    // Buscar os funcionários do banco de dados
-    const fetchFuncionarios = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/get-funcionarios"
-        );
-        setFuncionarios(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar funcionários:", error);
-      }
-    };
+  const [cnpj, setCnpj] = useState('');
+const [cnpjError, setCnpjError] = useState('');
 
-    fetchFuncionarios();
-  }, []);
+const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const newCnpj = event.target.value;
+  setCnpj(newCnpj);
+  if (isValidCNPJ(newCnpj)) {
+    setCnpjError('');
+  } else {
+    setCnpjError('CNPJ inválido');
+  }
+};
+
+  // useEffect(() => {
+  //   // Buscar os funcionários do banco de dados
+  //   const fetchFuncionarios = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:3000/get-funcionarios"
+  //       );
+  //       setFuncionarios(response.data);
+  //     } catch (error) {
+  //       console.error("Erro ao buscar funcionários:", error);
+  //     }
+  //   };
+
+  //   fetchFuncionarios();
+  // }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -88,49 +103,94 @@ export function NotasForm() {
   };
 
   return (
-    <div className="App bg-info bg-gradient rounded-5 shadow-lg pt-4">
+    <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Upload de Nota</h1>
-      <form className="form m-4 p-4" onSubmit={handleSubmit}>
-        <div className="row mb-4">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
-            Funcionário:
-          </label>
-          <div className="col-sm-10">
-            <select
-              className="form-control form-control-lg"
-              value={selectedFuncionario}
-              onChange={(event) => setSelectedFuncionario(event.target.value)}
+      <Form onSubmit={handleSubmit} className="m-4 p-4">
+             
+        <Row className="mb-4">
+          <Col sm={2}>
+            <Form.Label column lg={12} className="text-info-emphasis">
+              CNPJ:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <InputMask
+              mask="99.999.999/9999-99"
+              format={(value: string) => {
+                return value.replace(/\D+/g, '').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+              }}
+              value={cnpj}
+              onChange={handleCnpjChange}
             >
-              <option key="" value="">
-                Selecione um funcionário
-              </option>
-              {funcionarios.map((funcionario) => (
-                <option key={funcionario._id} value={funcionario._id}>
-                  {funcionario.Nome}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="row mb-4">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
-            Arquivo:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control"
+              {() => <Form.Control type="text" className="form-control" />}
+            </InputMask>
+            {cnpjError && (
+      <div className="text-danger">{cnpjError}</div>
+    )}
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col sm={2}>
+            <Form.Label column lg={12} className="text-info-emphasis">
+              Arquivo:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="file"
               name="arquivo"
               onChange={handleFileChange}
+              className="form-control"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <button type="submit" className="btn btn-lg btn-secondary">
+        <Button type="submit" size="lg" variant="secondary">
           Enviar
-        </button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+        </Button>
+      </Form>
+      {message && (
+        <Alert variant="info" className="mt-4">
+          {message}
+        </Alert>
+      )}
+    </Container>
   );
+}
+function isValidCNPJ(cnpj: string): boolean {
+  cnpj = cnpj.replace(/\D+/g, ''); // remove non-digit characters
+  if (cnpj.length !== 14) return false; // CNPJ must have 14 digits
+
+  let sum = 0;
+  let weight = 5;
+  let n = 0;
+
+  for (let i = 0; i < 12; i++) {
+    sum += parseInt(cnpj.charAt(i)) * weight;
+    weight--;
+    if (weight < 2) {
+      weight = 9;
+    }
+    n++;
+  }
+
+  let verifyingDigit = 11 - (sum % 11);
+  if (verifyingDigit > 9) verifyingDigit = 0;
+  if (cnpj.charAt(12) !== verifyingDigit.toString()) return false;
+
+  sum = 0;
+  weight = 6;
+  for (let i = 0; i < 13; i++) {
+    sum += parseInt(cnpj.charAt(i)) * weight;
+    weight--;
+    if (weight < 2) {
+      weight = 9;
+    }
+  }
+
+  verifyingDigit = 11 - (sum % 11);
+  if (verifyingDigit > 9) verifyingDigit = 0;
+  if (cnpj.charAt(13) !== verifyingDigit.toString()) return false;
+
+  return true;
 }

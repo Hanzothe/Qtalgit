@@ -11,12 +11,12 @@ import { ExibirProdutos } from "./ExibirProdutos";
 function App() {
   return (
     <div>
-      <ProdutosForm />
+      {/* <ProdutosForm />
       <EstoqueChange />
-      <ExibirProdutos />
-      {/* <ExibirNotas />
+      <ExibirProdutos /> */}
+      <ExibirNotas />
       <NotasForm />
-      <FuncionariosForm /> */}
+      <FuncionariosForm />
     </div>
   );
 }
