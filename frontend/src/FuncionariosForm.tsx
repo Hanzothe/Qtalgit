@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Button } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
 
 export function FuncionariosForm() {
   const [nome, setNome] = useState("");
@@ -45,89 +45,99 @@ export function FuncionariosForm() {
   };
 
   return (
-    <div className="App bg-info bg-gradient rounded-5 shadow-lg pt-4">
+    <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Adicionar Funcionário</h1>
-      <form className="form m-4 p-4" onSubmit={handleSubmit}>
-        <div className="row">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis ">
-            Nome:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control form-control-lg mx-n5"
+      <Form onSubmit={handleSubmit} className="m-4 p-4">
+        <Row>
+          <Col sm={2}>
+            <Form.Label column="lg" lg className="text-info-emphasis">
+              Nome:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="text"
               name="nome"
               value={nome}
               onChange={(event) => setNome(event.target.value)}
+              className="form-control-lg mx-n5"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row mt-2">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
-            Email:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control form-control-lg "
+        <Row className="mt-2">
+          <Col sm={2}>
+            <Form.Label column="lg" lg className="text-info-emphasis">
+              Email:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="email"
               name="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              className="form-control-lg"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row mt-2">
-          <label className="col-sm-2 col-form-label col-form-label-lg text-info-emphasis">
-            Contato:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control form-control-lg"
+        <Row className="mt-2">
+          <Col sm={2}>
+            <Form.Label column="lg" lg className="text-info-emphasis">
+              Contato:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="text"
               name="contato"
               value={contato}
               onChange={(event) => setContato(event.target.value)}
+              className="form-control-lg"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row mt-2">
-          <label className="col-sm-2 colform-label col-form-label-lg text-info-emphasis">
-            CNPJ:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control form-control-lg"
+        <Row className="mt-2">
+          <Col sm={2}>
+            <Form.Label column="lg" lg className="text-info-emphasis">
+              CNPJ:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="text"
               name="cnpj"
               value={cnpj}
               onChange={(event) => setCnpj(event.target.value)}
+              className="form-control-lg"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row mt-2">
-          <label className="col-sm-2 colform-label col-form-label-lg text-info-emphasis">
-            Serviço:
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control form-control-lg"
+        <Row className="mt-2">
+          <Col sm={2}>
+            <Form.Label column="lg" lg className="text-info-emphasis">
+              Serviço:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
               type="text"
               name="servico"
               value={servico}
               onChange={(event) => setServico(event.target.value)}
+              className="form-control-lg"
             />
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <button type="submit" className="btn btn-lg btn-secondary">
+        <Button type="submit" className="btn-lg btn-secondary">
           Enviar
-        </button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+        </Button>
+        {message && <Alert variant="success">{message}</Alert>}
+      </Form>
+    </Container>
   );
 }
