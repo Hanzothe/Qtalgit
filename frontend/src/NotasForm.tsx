@@ -11,7 +11,7 @@ interface Funcionario {
 }
 
 export function NotasForm() {
-  
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
   const [selectedFuncionario, setSelectedFuncionario] = useState("");
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState("");
@@ -30,21 +30,21 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
 
-  // useEffect(() => {
-  //   // Buscar os funcionários do banco de dados
-  //   const fetchFuncionarios = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:3000/get-funcionarios"
-  //       );
-  //       setFuncionarios(response.data);
-  //     } catch (error) {
-  //       console.error("Erro ao buscar funcionários:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    // Buscar os funcionários do banco de dados
+    const fetchFuncionarios = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/get-funcionarios"
+        );
+        setFuncionarios(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar funcionários:", error);
+      }
+    };
 
-  //   fetchFuncionarios();
-  // }, []);
+    fetchFuncionarios();
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -105,11 +105,34 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Upload de Nota</h1>
-      <Form onSubmit={handleSubmit} className="m-4 p-4">
-             
+      <Form noValidate onSubmit={handleSubmit} className="m-4 p-4">
+      <Row className="mb-4">
+          <Col sm={2}>
+            <Form.Label column="lg" lg={12} className="text-info-emphasis">
+              Funcionário:
+            </Form.Label>
+          </Col>
+          <Col sm={10}>
+            <Form.Control
+              as="select"
+              value={selectedFuncionario}
+              onChange={(event) => setSelectedFuncionario(event.target.value)}
+              className="form-control-lg"
+            >
+              <option key="" value="">
+                Selecione um funcionário
+              </option>
+              {funcionarios.map((funcionario) => (
+                <option key={funcionario._id} value={funcionario._id}>
+                  {funcionario.Nome}
+                </option>
+              ))}
+            </Form.Control>
+          </Col>
+        </Row>     
         <Row className="mb-4">
           <Col sm={2}>
-            <Form.Label column lg={12} className="text-info-emphasis">
+            <Form.Label column="lg" lg={12} className="text-info-emphasis">
               CNPJ:
             </Form.Label>
           </Col>
@@ -122,7 +145,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               value={cnpj}
               onChange={handleCnpjChange}
             >
-              {() => <Form.Control type="text" className="form-control" />}
+              {() => <Form.Control required type="text" className="form-control-lg" />}
             </InputMask>
             {cnpjError && (
       <div className="text-danger">{cnpjError}</div>
@@ -131,7 +154,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         </Row>
         <Row className="mb-4">
           <Col sm={2}>
-            <Form.Label column lg={12} className="text-info-emphasis">
+            <Form.Label column="lg" lg={12} className="text-info-emphasis">
               Arquivo:
             </Form.Label>
           </Col>
@@ -140,7 +163,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               type="file"
               name="arquivo"
               onChange={handleFileChange}
-              className="form-control"
+              className="form-control-lg"
             />
           </Col>
         </Row>
