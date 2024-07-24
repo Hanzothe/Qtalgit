@@ -13,6 +13,9 @@ interface NotaFiscal {
 interface Funcionario {
   _id: string;
   Nome: string;
+  Email: string;
+  CNPJ: string;
+  Servico: string
 }
 
 export function ExibirNotas() {
@@ -71,15 +74,28 @@ export function ExibirNotas() {
   );
 }
 
+
 interface NotaFiscalCardProps {
   nota: NotaFiscal;
   funcionario?: Funcionario;
 }
+const extrairDataDaUrl = (fileUrl: string): string => {
+  const regex = /\/(\d+)_/;
+  const match = fileUrl.match(regex);
+  if (match) {
+    const timestamp = parseInt(match[1], 10);
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+  }
+  return "Data desconhecida";
+};
 
 const NotaFiscalCard: React.FC<NotaFiscalCardProps> = ({
   nota,
   funcionario,
 }) => {
+  const data = extrairDataDaUrl(nota.fileUrl);
+
   return (
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" src={notaFiscalImage} />
@@ -87,6 +103,18 @@ const NotaFiscalCard: React.FC<NotaFiscalCardProps> = ({
         <Card.Title>Nota Fiscal</Card.Title>
         <Card.Text>
           Funcionário: {funcionario ? funcionario.Nome : "Desconhecido"}
+        </Card.Text>
+        <Card.Text>
+          Email: {funcionario ? funcionario.Email : "Desconhecido"}
+        </Card.Text>
+        <Card.Text>
+          CNPJ: {funcionario ? funcionario.CNPJ : "Desconhecido"}
+        </Card.Text>
+        <Card.Text>
+          Função: {funcionario ? funcionario.Servico : "Desconhecido"}
+        </Card.Text>
+        <Card.Text>
+          Data: {data}
         </Card.Text>
         <Card.Link
           href={nota.fileUrl}
