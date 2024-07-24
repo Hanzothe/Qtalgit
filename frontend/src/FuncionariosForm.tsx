@@ -12,6 +12,12 @@ export function FuncionariosForm() {
   const [servico, setServico] = useState("");
   const [message, setMessage] = useState<string>("");
 
+  const [validated, setValidated] = useState(false);
+
+  
+    
+
+
   const [cnpj, setCnpj] = useState('');
 const [cnpjError, setCnpjError] = useState('');
 
@@ -26,7 +32,13 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    setValidated(true);
 
     // Dados do funcionário a serem enviados
     const funcionarioData = {
@@ -60,7 +72,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Adicionar Funcionário</h1>
-      <Form onSubmit={handleSubmit} className="m-4 p-4">
+      <Form noValidate validated={validated} onSubmit={handleSubmit} className="m-4 p-4">
         <Row>
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
@@ -69,6 +81,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
           <Col sm={10}>
             <Form.Control
+            required
               type="text"
               name="nome"
               value={nome}
@@ -78,7 +91,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
         </Row>
 
-        <Row className="mt-2">
+        <Row className="mt-3">
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
               Email:
@@ -86,6 +99,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
           <Col sm={10}>
             <Form.Control
+            required
               type="email"
               name="email"
               value={email}
@@ -95,7 +109,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
         </Row>
 
-        <Row className="mt-2">
+        <Row className="mt-3">
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
               Contato:
@@ -103,17 +117,20 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
           <Col sm={10}>
           <InputMask
-              mask="(99) \99999-9999"
+              mask="(99) 99999-9999"
               value={contato}
-              
+              onChange={(event) => {
+                const newValue = event.target.value.replace(/\D+/g, '');
+                setContato(newValue);
+              }}       
             >
-              {() => <Form.Control type="text" className="form-control-lg" />}
+              {() => <Form.Control required type="text" className="form-control-lg" />}
             </InputMask>
             
           </Col>
         </Row>
 
-        <Row className="mt-2">
+        <Row className="mt-3">
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
               CNPJ:
@@ -128,7 +145,7 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               value={cnpj}
               onChange={handleCnpjChange}
             >
-              {() => <Form.Control type="text" className="form-control-lg" />}
+              {() => <Form.Control required type="text" className="form-control-lg" />}
             </InputMask>
             {cnpjError && (
       <div className="text-danger">{cnpjError}</div>
@@ -136,24 +153,25 @@ const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Col>
         </Row>
 
-        <Row className="mt-2">
+        <Row className="mt-3 mb-4">
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
-              Serviço:
+              Função:
             </Form.Label>
           </Col>
           <Col sm={10}>
             <Form.Control
+            required
               type="text"
               name="servico"
               value={servico}
               onChange={(event) => setServico(event.target.value)}
-              className="form-control-lg"
+              className="form-control-lg "
             />
           </Col>
         </Row>
 
-        <Button type="submit" className="btn-lg btn-secondary">
+        <Button type="submit" size="lg" className="btn-lg btn-secondary">
           Enviar
         </Button>
         {message && <Alert variant="success">{message}</Alert>}
