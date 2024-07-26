@@ -7,6 +7,7 @@ import { ExibirNotas } from "./ExibirNotas";
 import { ProdutosForm } from "./ProdutosForm";
 import { EstoqueChange } from "./updateEstoque";
 import { ExibirProdutos } from "./ExibirProdutos";
+import { Login } from "./Login";
 
 function App() {
   return (
@@ -14,9 +15,10 @@ function App() {
       {/* <ProdutosForm />
       <EstoqueChange />
       <ExibirProdutos /> */}
-      <ExibirNotas />
+      {/* <ExibirNotas />
       <NotasForm />
-      <FuncionariosForm />
+      <FuncionariosForm /> */}
+      <Login/>
     </div>
   );
 }
