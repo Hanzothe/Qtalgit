@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import InputMask from 'react-input-mask';
 
 interface Funcionario {
@@ -119,13 +119,24 @@ export function Login() {
             </Form.Label>
           </Col>
           <Col sm={10}>
+          <InputGroup>
             <Form.Control
               type={showPassword ? 'text' : 'password'}
               value={password}
-              onChange={(e) => setPassword}
+              onChange={(e) => setPassword(e.target.value)}
               name="senha"
               className="form-control-lg"
             />
+            <Button 
+            variant={showPassword ?"danger": "success"}
+            disabled={password.length === 0}
+            // className="bg-dark"
+            onClick={handleTogglePassword}
+            >
+              {showPassword? 'Esconder': 'Mostrar'}
+            </Button>
+           
+          </InputGroup>
           </Col>
         </Row>
 
