@@ -1,8 +1,29 @@
+/* App.css */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.container {
+  margin-top: 80px; /* Adicione este padding para compensar a barra de navegação fixa */
+}
+
+.table-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.align-middle {
+  vertical-align: middle !important;
 }
 
 .logo {
