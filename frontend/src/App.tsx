@@ -1,21 +1,25 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import { NotasForm } from "./NotasForm";
+import NotasPage from "./NotasPage";
 import { FuncionariosForm } from "./FuncionariosForm";
-import { ExibirNotas } from "./ExibirNotas";
-import { ProdutosForm } from "./ProdutosForm";
-import { EstoqueChange } from "./updateEstoque";
-import { ExibirProdutos } from "./ExibirProdutos";
-import { GerenciarEstoque } from "./gerenciarEstoque";
+import EstoquePage from "./EstoquePage";
+import Home from './home';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import logo from "./images/images (1).png";
 
 function App() {
   return (
     <Router>
-      <Navbar bg="light" expand="lg" fixed="top">
-        <Navbar.Brand href="/">Meu App</Navbar.Brand>
+      <Navbar bg="white" expand="lg" fixed="top">
+        <Navbar.Brand href="/"><img src={logo}
+              width="100"
+              height="60"
+              className="d-inline-block align-top  ms-1"
+              alt="React Bootstrap logo"
+            />
+          </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -25,14 +29,8 @@ function App() {
             <Nav.Link as={Link} to="/funcionarios">
               Funcionários
             </Nav.Link>
-            <Nav.Link as={Link} to="/exibir-notas">
-              Exibir Notas
-            </Nav.Link>
-            <Nav.Link as={Link} to="/produtos">
-              Produtos
-            </Nav.Link>
-            <Nav.Link as={Link} to="/estoque-change">
-              Gerenciar Estoque
+            <Nav.Link as={Link} to="/estoque">
+              Estoque
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -40,11 +38,10 @@ function App() {
 
       <div className="container mt-4">
         <Routes>
-          <Route path="/notas" element={<NotasForm />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/notas" element={<NotasPage />} />
           <Route path="/funcionarios" element={<FuncionariosForm />} />
-          <Route path="/exibir-notas" element={<ExibirNotas />} />
-          <Route path="/produtos" element={<ProdutosForm />} />
-          <Route path="/estoque-change" element={<GerenciarEstoque />} />
+          <Route path="/estoque" element={<EstoquePage />} />
         </Routes>
       </div>
     </Router>
