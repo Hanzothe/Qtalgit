@@ -8,19 +8,36 @@ import { ProdutosForm } from "./ProdutosForm";
 import { EstoqueChange } from "./updateEstoque";
 import { ExibirProdutos } from "./ExibirProdutos";
 import { Login } from "./Login";
+import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
+import simpleRestProvider from 'ra-data-simple-rest';
 
+
+
+const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+  const customHeaders = (options.headers ||
+      new Headers({
+          Accept: 'application/json',
+          
+      })) as Headers;
+  // add your own headers here
+  customHeaders.set('X-Custom-Header', 'foobar');
+  
+  options.headers = customHeaders;
+  return fetchUtils.fetchJson(url, options);
+}
+
+const dataProvider = simpleRestProvider('http://localhost:3000', httpClient) 
 function App() {
   return (
     <div>
-      {/* <ProdutosForm />
-      <EstoqueChange />
-      <ExibirProdutos /> */}
-      {/* <ExibirNotas />
-      <NotasForm />
-      <FuncionariosForm /> */}
-      <Login/>
+      
+      <Admin dataProvider={dataProvider}>
+      <Resource name="get-funcionarios" list={ListGuesser} />
+      <Resource name="comments" list={ListGuesser} />
+    </Admin>
     </div>
   );
 }
 
 export default App;
+

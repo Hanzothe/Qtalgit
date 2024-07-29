@@ -1,12 +1,17 @@
 import React from "react"
-import { AdminUI, Resource } from "react-admin"
+import { Admin, Resource, ListGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server"
 
-// const dataProvider = json
+const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 
-export function Admin() {
-    return(
-        <Admin>
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+      <Resource name="posts" list={ListGuesser} />
+      <Resource name="comments" list={ListGuesser} />
+    </Admin>
 
-        </Admin>
-    );
-}
+    
+  );
+
+export default App;
+

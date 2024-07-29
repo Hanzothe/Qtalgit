@@ -25,7 +25,11 @@ const connectToMongoDB = async () => {
 
 connectToMongoDB();
 
-app.use(cors());
+const corsOptions = {
+  exposedHeaders: 'X-Custom-Header' // Aqui você expõe o cabeçalho customizado
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use('/files', express.static('uploads'));
 
