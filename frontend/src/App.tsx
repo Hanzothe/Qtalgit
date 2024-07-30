@@ -8,33 +8,36 @@ import { ProdutosForm } from "./ProdutosForm";
 import { EstoqueChange } from "./updateEstoque";
 import { ExibirProdutos } from "./ExibirProdutos";
 import { Login } from "./Login";
-import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
+// import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
 import simpleRestProvider from 'ra-data-simple-rest';
+import Admin from "./Admin";
+import { FuncionariosList } from "./FuncionariosList";
 
 
 
-const httpClient = (url: string, options: fetchUtils.Options = {}) => {
-  const customHeaders = (options.headers ||
-      new Headers({
-          Accept: 'application/json',
-          
-      })) as Headers;
-  // add your own headers here
-  customHeaders.set('X-Custom-Header', 'foobar');
+// const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+//   const customHeaders = (options.headers ||
+//       new Headers({
+//         Accept: 'application/json',
+//       })) as Headers;
+//   // add your own headers here
+//   customHeaders.set('X-Custom-Header', 'foobar');
   
-  options.headers = customHeaders;
-  return fetchUtils.fetchJson(url, options);
-}
+//   options.headers = customHeaders;
+//   options.mode = 'cors'; // add this line
+//   return fetchUtils.fetchJson(url, options);
+// }
 
-const dataProvider = simpleRestProvider('http://localhost:3000', httpClient) 
+// const dataProvider = simpleRestProvider('http://localhost:3000', httpClient) 
 function App() {
   return (
     <div>
-      
-      <Admin dataProvider={dataProvider}>
+      {/* <Admin dataProvider={dataProvider}>
       <Resource name="get-funcionarios" list={ListGuesser} />
       <Resource name="comments" list={ListGuesser} />
-    </Admin>
+    </Admin> */}
+    <Admin/>
+    <FuncionariosList/>
     </div>
   );
 }
