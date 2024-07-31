@@ -1,0 +1,41 @@
+.blur-background {
+    filter: blur(5px);
+    transition: filter 0.3s ease-in-out;
+  }
+  
+  .login-modal-body {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-btn {
+    width: 100%;
+    background-color: #6c63ff; /* Cor personalizada */
+    border: none;
+  }
+  
+  .login-btn:hover {
+    background-color: #5553cc; /* Cor ao passar o mouse */
+  }
+  
+  input::placeholder {
+    color: #c0c0c0;
+    font-size: 1.1rem;
+  }
+  
+  a.text-info {
+    color: #6c63ff;
+  }
+  
+  a.text-info:hover {
+    color: #5553cc;
+  }
+  
+  h2.text-center {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  

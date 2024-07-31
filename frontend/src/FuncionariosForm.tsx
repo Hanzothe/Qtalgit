@@ -14,22 +14,18 @@ export function FuncionariosForm() {
 
   const [validated, setValidated] = useState(false);
 
-  
-    
-
-
   const [cnpj, setCnpj] = useState('');
-const [cnpjError, setCnpjError] = useState('');
+  const [cnpjError, setCnpjError] = useState('');
 
-const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const newCnpj = event.target.value;
-  setCnpj(newCnpj);
-  if (isValidCNPJ(newCnpj)) {
-    setCnpjError('');
-  } else {
-    setCnpjError('CNPJ inválido');
-  }
-};
+  const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newCnpj = event.target.value;
+    setCnpj(newCnpj);
+    if (isValidCNPJ(newCnpj)) {
+      setCnpjError('');
+    } else {
+      setCnpjError('CNPJ inválido');
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;

@@ -12,6 +12,7 @@ import { Login } from "./Login";
 import simpleRestProvider from 'ra-data-simple-rest';
 import Admin from "./Admin";
 import { FuncionariosList } from "./FuncionariosList";
+import LoginPopUp from "./LoginPopUp";
 
 
 
@@ -36,8 +37,9 @@ function App() {
       <Resource name="get-funcionarios" list={ListGuesser} />
       <Resource name="comments" list={ListGuesser} />
     </Admin> */}
-    <Admin/>
-    <FuncionariosList/>
+    {/* <Admin/>
+    <FuncionariosList/> */}
+    <LoginPopUp/>
     </div>
   );
 }
