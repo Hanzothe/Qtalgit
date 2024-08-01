@@ -83,6 +83,7 @@ app.post('/add-emissor', checkDbConnection, async (req: RequestWithDb, res: Resp
 });
 
 // Rota para adicionar um funcionário ao banco de dados
+// Rota para adicionar um funcionário ao banco de dados
 app.post('/add-funcionario', checkDbConnection, async (req: RequestWithDb, res: Response) => {
   const { Nome, Email, Contato, CNPJ, Servico } = req.body;
 
@@ -104,14 +105,22 @@ app.post('/add-funcionario', checkDbConnection, async (req: RequestWithDb, res: 
 
 // Rota para adicionar uma nota ao banco de dados
 app.post('/add-nota', checkDbConnection, async (req: RequestWithDb, res: Response) => {
-  const { funcionario, fileUrl } = req.body;
+  const { cnpj, fileUrl } = req.body;
 
-  if (!funcionario || !fileUrl) {
+  if (!cnpj || !fileUrl) {
     return res.status(400).send('Missing fields in request body.');
   }
 
   try {
-    const nota = { funcionario, fileUrl };
+    // Buscar o funcionário pelo CNPJ
+    const funcionarioData = await req.db!.collection('Funcionarios').findOne({ CNPJ: cnpj });
+
+    if (!funcionarioData) {
+      return res.status(404).send('Funcionário não encontrado');
+    }
+
+    // Inserir a nota com o ID do funcionário como string
+    const nota = { funcionario: funcionarioData._id.toString(), fileUrl };
     const result = await req.db!.collection('Notas').insertOne(nota);
     console.log('Nota inserted successfully', result);
 
@@ -134,6 +143,28 @@ app.get('/get-notas-fiscais', checkDbConnection, async (req: RequestWithDb, res:
 });
 
 // Rota para buscar todos os funcionários do banco de dados
+app.get('/get-funcionario', checkDbConnection, async (req: RequestWithDb, res: Response) => {
+  const { cnpj } = req.query;
+
+  if (!cnpj) {
+    return res.status(400).send('CNPJ é necessário');
+  }
+
+  try {
+    // Certifique-se de que a busca pelo CNPJ está considerando a formatação
+    const funcionario = await req.db!.collection('Funcionarios').findOne({ CNPJ: cnpj });
+
+    if (!funcionario) {
+      return res.status(404).send('Funcionário não encontrado');
+    }
+
+    res.status(200).json(funcionario);
+  } catch (err) {
+    console.error('Erro ao buscar funcionário:', (err as Error).message);
+    res.status(500).send(`Erro ao buscar funcionário: ${(err as Error).message}`);
+  }
+});
+
 app.get('/get-funcionarios', checkDbConnection, async (req: RequestWithDb, res: Response) => {
   try {
     const funcionarios = await req.db!.collection('Funcionarios').find().toArray();
@@ -143,6 +174,7 @@ app.get('/get-funcionarios', checkDbConnection, async (req: RequestWithDb, res: 
     res.status(500).send(`Erro ao buscar funcionários: ${(err as Error).message}`);
   }
 });
+
 
 // Rota para adicionar um produto ao banco de dados
 app.post('/add-produto', checkDbConnection, async (req: RequestWithDb, res: Response) => {
@@ -220,6 +252,7 @@ app.get('/get-funcionario/:id', checkDbConnection, async (req: RequestWithDb, re
     res.status(500).send(`Erro ao buscar funcionário: ${(err as Error).message}`);
   }
 });
+
 
 // Rota para buscar todos os produtos
 app.get('/get-produtos', checkDbConnection, async (req: RequestWithDb, res: Response) => {

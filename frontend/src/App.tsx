@@ -1,48 +1,60 @@
-import React, { useState } from "react";
-import { NotasForm } from "./NotasForm";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
+import NotasPage from "./NotasPage";
+import { FuncionariosForm } from "./FuncionariosForm";
+import EstoquePage from "./EstoquePage";
+import Home from "./home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { FuncionariosForm } from "./FuncionariosForm";
 import { ExibirNotas } from "./ExibirNotas";
 import { ProdutosForm } from "./ProdutosForm";
 import { EstoqueChange } from "./updateEstoque";
 import { ExibirProdutos } from "./ExibirProdutos";
 import { Login } from "./Login";
-// import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
-import simpleRestProvider from 'ra-data-simple-rest';
-import Admin from "./Admin";
-import { FuncionariosList } from "./FuncionariosList";
+import logo from "./images/images (1).png";
 import LoginPopUp from "./LoginPopUp";
 
-
-
-// const httpClient = (url: string, options: fetchUtils.Options = {}) => {
-//   const customHeaders = (options.headers ||
-//       new Headers({
-//         Accept: 'application/json',
-//       })) as Headers;
-//   // add your own headers here
-//   customHeaders.set('X-Custom-Header', 'foobar');
-  
-//   options.headers = customHeaders;
-//   options.mode = 'cors'; // add this line
-//   return fetchUtils.fetchJson(url, options);
-// }
-
-// const dataProvider = simpleRestProvider('http://localhost:3000', httpClient) 
 function App() {
   return (
-    <div>
-      {/* <Admin dataProvider={dataProvider}>
-      <Resource name="get-funcionarios" list={ListGuesser} />
-      <Resource name="comments" list={ListGuesser} />
-    </Admin> */}
-    {/* <Admin/>
-    <FuncionariosList/> */}
-    <LoginPopUp/>
-    </div>
+    <Router>
+      <Navbar bg="white" expand="lg" fixed="top">
+        <Navbar.Brand href="/">
+          <img
+            src={logo}
+            width="100"
+            height="60"
+            className="d-inline-block align-top ms-1"
+            alt="React Bootstrap logo"
+          />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/notas">
+              Notas
+            </Nav.Link>
+            <Nav.Link as={Link} to="/funcionarios">
+              Funcionários
+            </Nav.Link>
+            <Nav.Link as={Link} to="/estoque">
+              Estoque
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/notas" element={<NotasPage />} />
+          <Route path="/funcionarios" element={<FuncionariosForm />} />
+          <Route path="/estoque" element={<EstoquePage />} />
+        </Routes>
+        <LoginPopUp />
+      </div>
+    </Router>
   );
 }
 
 export default App;
-

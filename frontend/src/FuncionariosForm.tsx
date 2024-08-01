@@ -77,7 +77,7 @@ export function FuncionariosForm() {
           </Col>
           <Col sm={10}>
             <Form.Control
-            required
+              required
               type="text"
               name="nome"
               value={nome}
@@ -95,7 +95,7 @@ export function FuncionariosForm() {
           </Col>
           <Col sm={10}>
             <Form.Control
-            required
+              required
               type="email"
               name="email"
               value={email}
@@ -112,17 +112,16 @@ export function FuncionariosForm() {
             </Form.Label>
           </Col>
           <Col sm={10}>
-          <InputMask
+            <InputMask
               mask="(99) 99999-9999"
               value={contato}
               onChange={(event) => {
                 const newValue = event.target.value.replace(/\D+/g, '');
                 setContato(newValue);
-              }}       
+              }}
             >
               {() => <Form.Control required type="text" className="form-control-lg" />}
             </InputMask>
-            
           </Col>
         </Row>
 
@@ -133,7 +132,7 @@ export function FuncionariosForm() {
             </Form.Label>
           </Col>
           <Col sm={10}>
-          <InputMask
+            <InputMask
               mask="99.999.999/9999-99"
               format={(value: string) => {
                 return value.replace(/\D+/g, '').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
@@ -144,8 +143,8 @@ export function FuncionariosForm() {
               {() => <Form.Control required type="text" className="form-control-lg" />}
             </InputMask>
             {cnpjError && (
-      <div className="text-danger">{cnpjError}</div>
-    )}
+              <div className="text-danger">{cnpjError}</div>
+            )}
           </Col>
         </Row>
 
@@ -157,7 +156,7 @@ export function FuncionariosForm() {
           </Col>
           <Col sm={10}>
             <Form.Control
-            required
+              required
               type="text"
               name="servico"
               value={servico}
@@ -175,6 +174,7 @@ export function FuncionariosForm() {
     </Container>
   );
 }
+
 function isValidCNPJ(cnpj: string): boolean {
   cnpj = cnpj.replace(/\D+/g, ''); // remove non-digit characters
   if (cnpj.length !== 14) return false; // CNPJ must have 14 digits
