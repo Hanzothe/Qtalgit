@@ -4,7 +4,7 @@ import { ExibirNotas } from "./ExibirNotas";
 
 const NotasPage = () => {
   return (
-    <div style={{paddingTop: 875}}>
+    <div className="notasPage">
       <ExibirNotas />
       <h1>Notas</h1>
       <NotasForm />

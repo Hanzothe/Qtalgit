@@ -2,27 +2,37 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  /* padding: 2rem; */
   text-align: center;
 }
 
 body {
-  /* background-image: url('./images/cinemabg.webp');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center; */
-  width: 100vw;
-  height: 100vh; 
+  margin: 0; /* Remove margens padrão do body */
+  min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da tela */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
 
-.container {
-  margin-top: 80px; /* Adicione este padding para compensar a barra de navegação fixa */
+.navbar-container {
+  flex: 0 0 auto; /* Navbar tem altura fixa */
 }
 
+.main-content-container {
+  flex: 1 1 auto; /* Conteúdo principal ocupa o restante do espaço */
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px; /* Espaço para compensar a altura da navbar */
+}
+
+.main-content {
+  padding: 3rem; 
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  overflow: auto; /* Permite scroll se necessário */
+}
+
+/* Estilo da tabela e outros elementos */
 .table-container {
   background-color: #ffffff;
   border-radius: 8px;
@@ -74,11 +84,3 @@ body {
 .read-the-docs {
   color: #888;
 }
-
-/* App.css */
-
-/* Ajuste a altura de acordo com a altura da navbar */
-.main-content {
-  padding-top: 150vh; /* ou a altura exata da sua navbar */
-}
-
