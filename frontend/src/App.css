@@ -79,6 +79,6 @@ body {
 
 /* Ajuste a altura de acordo com a altura da navbar */
 .main-content {
-  padding-top: 138vh; /* ou a altura exata da sua navbar */
+  padding-top: 150vh; /* ou a altura exata da sua navbar */
 }
 
