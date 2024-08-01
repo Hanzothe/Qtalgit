@@ -75,4 +75,10 @@ body {
   color: #888;
 }
 
+/* App.css */
+
+/* Ajuste a altura de acordo com a altura da navbar */
+.main-content {
+  padding-top: 138vh; /* ou a altura exata da sua navbar */
+}
 

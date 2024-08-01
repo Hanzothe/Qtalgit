@@ -44,14 +44,14 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
 
-      <div className="container mt-4">
+      <div className="container mt-4 main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/notas" element={<NotasPage />} />
           <Route path="/funcionarios" element={<FuncionariosForm />} />
           <Route path="/estoque" element={<EstoquePage />} />
         </Routes>
-        <LoginPopUp />
+        {/* <LoginPopUp /> */}
       </div>
     </Router>
   );
