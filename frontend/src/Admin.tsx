@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react"
-import jsonServerProvider from "ra-data-json-server"
+import React, { useEffect, useState } from "react";
+import jsonServerProvider from "ra-data-json-server";
 import axios from "axios";
 import { Card, CardTitle, Container } from "react-bootstrap";
-
 
 interface Funcionario {
   _id: string;
   Nome: string;
   Email: string;
   CNPJ: string;
-  Servico: string
+  Servico: string;
 }
 
 export function Admin() {
-
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
 
   useEffect(() => {
     const fetchFuncionarios = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/get-funcionarios"
+          "https://qtalgit.onrender.com/get-funcionarios"
         );
         setFuncionarios(response.data);
       } catch (error) {
@@ -35,17 +33,11 @@ export function Admin() {
     funcionariosMap.set(funcionario._id, funcionario);
   });
 
-  return(
+  return (
     <Card>
       <CardTitle>Tela de admin</CardTitle>
     </Card>
-  )
+  );
 }
-    
-
-    
-  
 
 export default Admin;
-
-

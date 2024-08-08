@@ -30,7 +30,7 @@ export function ExibirNotas() {
     const fetchNotasFiscais = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/get-notas-fiscais"
+          "https://qtalgit.onrender.com/get-notas-fiscais"
         );
         setNotasFiscais(response.data);
       } catch (error) {
@@ -41,7 +41,7 @@ export function ExibirNotas() {
     const fetchFuncionarios = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/get-funcionarios"
+          "https://qtalgit.onrender.com/get-funcionarios"
         );
         setFuncionarios(response.data);
       } catch (error) {

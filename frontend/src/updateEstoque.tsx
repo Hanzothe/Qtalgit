@@ -19,7 +19,9 @@ export function EstoqueChange() {
     // Buscar os produtos do banco de dados
     const fetchProdutos = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/get-produtos");
+        const response = await axios.get(
+          "https://qtalgit.onrender.com/get-produtos"
+        );
         setProdutos(response.data);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
@@ -39,7 +41,7 @@ export function EstoqueChange() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:3000/update-produto/${selectedProduto}`,
+        `https://qtalgit.onrender.com/update-produto/${selectedProduto}`,
         { quantidade: Math.abs(quantidade) } // Mantém positivo
       );
 
@@ -59,7 +61,7 @@ export function EstoqueChange() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:3000/update-produto/${selectedProduto}`,
+        `https://qtalgit.onrender.com/update-produto/${selectedProduto}`,
         { quantidade: -Math.abs(quantidade) } // Muda para negativo
       );
 

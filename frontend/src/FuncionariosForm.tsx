@@ -3,7 +3,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Alert, Button, Col, Container, Form, Row } from "react-bootstrap";
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
 export function FuncionariosForm() {
   const [nome, setNome] = useState("");
@@ -14,16 +14,16 @@ export function FuncionariosForm() {
 
   const [validated, setValidated] = useState(false);
 
-  const [cnpj, setCnpj] = useState('');
-  const [cnpjError, setCnpjError] = useState('');
+  const [cnpj, setCnpj] = useState("");
+  const [cnpjError, setCnpjError] = useState("");
 
   const handleCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newCnpj = event.target.value;
     setCnpj(newCnpj);
     if (isValidCNPJ(newCnpj)) {
-      setCnpjError('');
+      setCnpjError("");
     } else {
-      setCnpjError('CNPJ inválido');
+      setCnpjError("CNPJ inválido");
     }
   };
 
@@ -48,7 +48,7 @@ export function FuncionariosForm() {
     try {
       // Envia os dados do formulário para a rota /add-funcionario
       const funcionarioResponse = await axios.post(
-        "http://localhost:3000/add-funcionario",
+        "https://qtalgit.onrender.com/add-funcionario",
         funcionarioData,
         {
           headers: {
@@ -68,7 +68,12 @@ export function FuncionariosForm() {
   return (
     <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Adicionar Funcionário</h1>
-      <Form noValidate validated={validated} onSubmit={handleSubmit} className="m-4 p-4">
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={handleSubmit}
+        className="m-4 p-4"
+      >
         <Row>
           <Col sm={2}>
             <Form.Label column="lg" lg className="text-info-emphasis">
@@ -116,11 +121,17 @@ export function FuncionariosForm() {
               mask="(99) 99999-9999"
               value={contato}
               onChange={(event) => {
-                const newValue = event.target.value.replace(/\D+/g, '');
+                const newValue = event.target.value.replace(/\D+/g, "");
                 setContato(newValue);
               }}
             >
-              {() => <Form.Control required type="text" className="form-control-lg" />}
+              {() => (
+                <Form.Control
+                  required
+                  type="text"
+                  className="form-control-lg"
+                />
+              )}
             </InputMask>
           </Col>
         </Row>
@@ -135,16 +146,25 @@ export function FuncionariosForm() {
             <InputMask
               mask="99.999.999/9999-99"
               format={(value: string) => {
-                return value.replace(/\D+/g, '').replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+                return value
+                  .replace(/\D+/g, "")
+                  .replace(
+                    /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+                    "$1.$2.$3/$4-$5"
+                  );
               }}
               value={cnpj}
               onChange={handleCnpjChange}
             >
-              {() => <Form.Control required type="text" className="form-control-lg" />}
+              {() => (
+                <Form.Control
+                  required
+                  type="text"
+                  className="form-control-lg"
+                />
+              )}
             </InputMask>
-            {cnpjError && (
-              <div className="text-danger">{cnpjError}</div>
-            )}
+            {cnpjError && <div className="text-danger">{cnpjError}</div>}
           </Col>
         </Row>
 
@@ -176,7 +196,7 @@ export function FuncionariosForm() {
 }
 
 function isValidCNPJ(cnpj: string): boolean {
-  cnpj = cnpj.replace(/\D+/g, ''); // remove non-digit characters
+  cnpj = cnpj.replace(/\D+/g, ""); // remove non-digit characters
   if (cnpj.length !== 14) return false; // CNPJ must have 14 digits
 
   let sum = 0;

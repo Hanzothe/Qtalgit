@@ -2,8 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Alert, Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
-import InputMask from 'react-input-mask';
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
+import InputMask from "react-input-mask";
 
 interface Funcionario {
   _id: string;
@@ -11,19 +19,18 @@ interface Funcionario {
 }
 
 export function Login() {
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
   const [selectedFuncionario, setSelectedFuncionario] = useState("");
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState("");
   const [message, setMessage] = useState<string>("");
 
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState("");
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
-  }
-
+  };
 
   // useEffect(() => {
   //   // Buscar os funcionários do banco de dados
@@ -61,7 +68,7 @@ export function Login() {
     try {
       // Primeiro envia o arquivo para a rota /upload
       const fileResponse = await axios.post(
-        "http://localhost:3000/upload",
+        "https://qtalgit.onrender.com/upload",
         formData,
         {
           headers: {
@@ -71,16 +78,16 @@ export function Login() {
       );
 
       console.log("Arquivo enviado:", fileResponse.data);
-      setFileUrl(`http://localhost:3000/files/${fileResponse.data}`);
+      setFileUrl(`https://qtalgit.onrender.com/files/${fileResponse.data}`);
 
       // Envia os dados da nota para a rota /add-nota
       const notaData = {
         funcionario: selectedFuncionario,
-        fileUrl: `http://localhost:3000/files/${fileResponse.data}`, // URL do arquivo
+        fileUrl: `https://qtalgit.onrender.com/files/${fileResponse.data}`, // URL do arquivo
       };
 
       const notaResponse = await axios.post(
-        "http://localhost:3000/add-nota",
+        "https://qtalgit.onrender.com/add-nota",
         notaData,
         {
           headers: {
@@ -101,7 +108,6 @@ export function Login() {
     <Container className="bg-info bg-gradient rounded-5 shadow-lg pt-4">
       <h1 className="text-white mx-3">Login</h1>
       <Form noValidate onSubmit={handleSubmit} className="m-4 p-4">
-           
         <Row className="mb-4">
           <Col sm={2}>
             <Form.Label column="lg" lg={12} className="text-info-emphasis">
@@ -119,24 +125,23 @@ export function Login() {
             </Form.Label>
           </Col>
           <Col sm={10}>
-          <InputGroup>
-            <Form.Control
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              name="senha"
-              className="form-control-lg"
-            />
-            <Button 
-            variant={showPassword ?"danger": "success"}
-            disabled={password.length === 0}
-            // className="bg-dark"
-            onClick={handleTogglePassword}
-            >
-              {showPassword? 'Esconder': 'Mostrar'}
-            </Button>
-           
-          </InputGroup>
+            <InputGroup>
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                name="senha"
+                className="form-control-lg"
+              />
+              <Button
+                variant={showPassword ? "danger" : "success"}
+                disabled={password.length === 0}
+                // className="bg-dark"
+                onClick={handleTogglePassword}
+              >
+                {showPassword ? "Esconder" : "Mostrar"}
+              </Button>
+            </InputGroup>
           </Col>
         </Row>
 
@@ -152,4 +157,3 @@ export function Login() {
     </Container>
   );
 }
-

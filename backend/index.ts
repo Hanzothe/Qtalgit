@@ -26,6 +26,7 @@ const connectToMongoDB = async () => {
 connectToMongoDB();
 
 const corsOptions = {
+  origin:'https://qtalgit.vercel.app/',
   exposedHeaders: 'X-Custom-Header' // Aqui você expõe o cabeçalho customizado
 };
 

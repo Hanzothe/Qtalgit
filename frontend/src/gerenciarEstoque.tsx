@@ -23,7 +23,9 @@ export function GerenciarEstoque() {
     // Buscar os produtos do banco de dados
     const fetchProdutos = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/get-produtos");
+        const response = await axios.get(
+          "https://qtalgit.onrender.com/get-produtos"
+        );
         setProdutos(response.data);
         setAdjustments(response.data.map(() => 0)); // Inicializa os ajustes como 0
       } catch (error) {
@@ -59,15 +61,20 @@ export function GerenciarEstoque() {
 
     try {
       const updatePromises = produtos.map((produto, index) =>
-        axios.patch(`http://localhost:3000/update-produto/${produto._id}`, {
-          quantidade: adjustments[index], // Envia apenas o ajuste
-        })
+        axios.patch(
+          `https://qtalgit.onrender.com/update-produto/${produto._id}`,
+          {
+            quantidade: adjustments[index], // Envia apenas o ajuste
+          }
+        )
       );
       await Promise.all(updatePromises);
       setMessage("Estoque atualizado com sucesso");
 
       // Recarregar os produtos do banco de dados
-      const response = await axios.get("http://localhost:3000/get-produtos");
+      const response = await axios.get(
+        "https://qtalgit.onrender.com/get-produtos"
+      );
       setProdutos(response.data);
       setAdjustments(response.data.map(() => 0)); // Reinicia os ajustes para 0
     } catch (error) {

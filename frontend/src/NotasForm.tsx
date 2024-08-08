@@ -60,7 +60,7 @@ export function NotasForm() {
   const fetchFuncionarioByCNPJ = async (cnpj: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/get-funcionario?cnpj=${cnpj}`
+        `https://qtalgit.onrender.com/get-funcionario?cnpj=${cnpj}`
       );
       setFuncionario(response.data);
     } catch (error) {
@@ -106,7 +106,7 @@ export function NotasForm() {
     try {
       // Enviar o arquivo
       const fileResponse = await axios.post(
-        "http://localhost:3000/upload",
+        "https://qtalgit.onrender.com/upload",
         formData,
         {
           headers: {
@@ -117,7 +117,7 @@ export function NotasForm() {
 
       console.log("Arquivo enviado:", fileResponse.data);
 
-      const fileUrl = `http://localhost:3000/files/${fileResponse.data}`;
+      const fileUrl = `https://qtalgit.onrender.com/files/${fileResponse.data}`;
 
       // Preparar os dados da nota
       const notaData = {
@@ -127,7 +127,7 @@ export function NotasForm() {
 
       // Enviar os dados da nota
       const notaResponse = await axios.post(
-        "http://localhost:3000/add-nota",
+        "https://qtalgit.onrender.com/add-nota",
         notaData,
         {
           headers: {
